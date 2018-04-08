@@ -14,6 +14,8 @@ public class ToasterUI extends ClientUI{
     private JButton turnToasterOff;
     private JButton putBreadInToaster;
     private JButton toast;
+    private JButton finishToasting;
+    
     private final ToasterClient toasterClientRef;
 
     public ToasterUI(ToasterClient toasterClient) {
@@ -40,10 +42,15 @@ public class ToasterUI extends ClientUI{
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
         add(new JButton[]{putBreadInToaster});
         
-        toast = new JButton("Toast");
+        toast = new JButton("Toast Bread");
         toast.setEnabled(false);
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
         add(new JButton[]{toast});
+        
+        finishToasting = new JButton("Stop Toasting");
+        finishToasting.setEnabled(false);
+        scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
+        add(new JButton[]{finishToasting});
     }
     
     @Override
@@ -66,11 +73,18 @@ public class ToasterUI extends ClientUI{
             toast.setEnabled(false);
         } else if (e.getSource() == putBreadInToaster){
             toasterClientRef.putBreadInToaster();
+            putBreadInToaster.setEnabled(false);
             toast.setEnabled(true);
         } else if (e.getSource() == toast){
             toasterClientRef.Toasting();
             toast.setEnabled(false);
             putBreadInToaster.setEnabled(false);
+            finishToasting.setEnabled(true);
+        } else if (e.getSource() == finishToasting){
+            toasterClientRef.finishToasting();
+            toast.setEnabled(false);
+            putBreadInToaster.setEnabled(true);
+            finishToasting.setEnabled(false);
         }
     }
     
