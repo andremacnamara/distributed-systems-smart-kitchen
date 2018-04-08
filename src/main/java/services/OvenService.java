@@ -20,7 +20,8 @@ public class OvenService extends Service {
     private int minTemp;
     private int ovenTemp;
     private int power;
-    private static boolean tempIncreaseing, tempDecreasing, on, off;
+    private int FoodLevel;
+    private static boolean tempIncreaseing, tempDecreasing, on, off, foodInOven;
 
     public OvenService(String serviceName) {
         super(serviceName, "_oven._udp.local.");
@@ -32,6 +33,7 @@ public class OvenService extends Service {
         tempDecreasing = false;
         on = false;
         off = true;
+        FoodLevel = 0;
         ui = new ServiceUI(this, serviceName);
     }
 
@@ -108,6 +110,15 @@ public class OvenService extends Service {
         }
     }
     
+       public void putBreadInToaster(){
+        if(FoodLevel <= 0){
+            foodInOven = true;
+            FoodLevel = 4;
+        } else {
+            foodInOven= false;
+        }
+    }
+
     public void turnOvenOff() {
         if (power >= 0) {
             power = 0;

@@ -20,6 +20,7 @@ public class OvenUI extends ClientUI {
     private JButton decrease;
     private JButton turnOvenOn;
     private JButton turnOvenOff;
+    private JButton putFoodInOven;
     private final OvenClient ovenClientRef;
 
     public OvenUI(OvenClient ovenClient) {
@@ -50,6 +51,11 @@ public class OvenUI extends ClientUI {
         turnOvenOn.setEnabled(true);
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
         add(new JButton[]{turnOvenOn});
+        
+        putFoodInOven = new JButton("Add food");
+        turnOvenOn.setEnabled(true);
+        scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
+        add(new JButton[]{turnOvenOn});
     }
 
     @Override
@@ -64,12 +70,19 @@ public class OvenUI extends ClientUI {
             decrease.setEnabled(false);
             turnOvenOff.setEnabled(false);
             turnOvenOn.setEnabled(true);
-        } else if (e.getSource() == turnOvenOn) {
-            ovenClientRef.turnLightsOn();
+        } 
+        else if (e.getSource() == putFoodInOven){
+            ovenClientRef.putFoodInOven();
+        }
+        
+        else if (e.getSource() == turnOvenOn) {
+            ovenClientRef.turnOvenOn();
             increase.setEnabled(true);
             decrease.setEnabled(true);
+            putFoodInOven.setEnabled(true);
             turnOvenOff.setEnabled(true);
             turnOvenOn.setEnabled(false);
+            
         }
     }
 }
