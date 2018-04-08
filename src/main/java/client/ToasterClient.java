@@ -63,6 +63,32 @@ public class ToasterClient extends Client {
         }
     }
     
+    public void Toasting(){
+        String json = new Gson().toJson(new ToasterModel(ToasterModel.serviceAction.toasting));
+        String message = sendMessage(json);
+        ToasterModel toaster = new Gson().fromJson(message, ToasterModel.class);
+        System.out.println("Client Recieved " + json);
+        
+        if(toaster.getAction() == ToasterModel.serviceAction.toasting){
+            isToasting = toaster.getValue();
+            ui.updateArea(toaster.getMessage());
+        }
+    }
+    
+    public void finishToasting(){
+        String json = new Gson().toJson(new ToasterModel(ToasterModel.serviceAction.finishToasting));
+        String message = sendMessage(json);
+        ToasterModel toaster = new Gson().fromJson(message, ToasterModel.class);
+        System.out.println("Client Recieved " + json);
+        
+        if(toaster.getAction() == ToasterModel.serviceAction.finishToasting){
+            isToasting = toaster.getValue();
+            ui.updateArea(toaster.getMessage());
+        }
+    }
+    
+    
+    
     @Override
     public void updatePoll(String message){
         if(message.equals("100% Toasted")){

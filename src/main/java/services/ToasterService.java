@@ -12,7 +12,7 @@ public class ToasterService extends Service{
     
     private int power;
     private int breadLevel;
-    private static boolean turnToasterOn, turnToasterOff, breadInToaster;
+    private static boolean turnToasterOn, turnToasterOff, breadInToaster, toasting;
     
     public ToasterService(String serviceName){
         super(serviceName, "_toaster._udp.local.");
@@ -21,6 +21,8 @@ public class ToasterService extends Service{
             turnToasterOff = true; 
             breadInToaster = false;
             breadLevel = 0;
+            toasting = false;
+            
         //
         ui = new ServiceUI(this, serviceName);
     }
@@ -69,6 +71,28 @@ public class ToasterService extends Service{
             ui.updateArea(serviceMessage);
         }
         
+        else if (toaster.getAction() == ToasterModel.serviceAction.toasting){
+            Toasting();
+            String message = (toasting) ? "The bread is toasting" : "The bread is currently toasting";
+            String json = new Gson().toJson(new ToasterModel(ToasterModel.serviceAction.toasting, message));
+            System.out.println(json);
+            sendBack(json);
+            
+            String serviceMessage = (toasting) ? "The bread is toasting" : "The bread is currently toasting";
+            ui.updateArea(serviceMessage);
+        }
+        
+         else if (toaster.getAction() == ToasterModel.serviceAction.finishToasting){
+            Toasting();
+            String message = (toasting) ? "The bread is finished toasting" : "Please take your toast";
+            String json = new Gson().toJson(new ToasterModel(ToasterModel.serviceAction.finishToasting, message));
+            System.out.println(json);
+            sendBack(json);
+            
+            String serviceMessage = (toasting) ? "The bread is finished toasting" : "Please take your toast";
+            ui.updateArea(serviceMessage);
+        }
+        
         else {
             sendBack(BAD_COMMAND + " - " +a);
         }
@@ -95,6 +119,19 @@ public class ToasterService extends Service{
         } else {
             breadInToaster = false;
         }
+    }
+    
+    public void Toasting(){
+        if(breadLevel >= 0){
+            toasting = true;
+        } else {
+            toasting = false;
+        }
+        System.out.println(breadLevel);
+    }
+    
+    public void finishToasting(){
+        toasting = false;
     }
 
     @Override

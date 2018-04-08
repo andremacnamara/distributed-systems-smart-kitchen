@@ -14,7 +14,7 @@ package models;
 public class ToasterModel {
 
     public enum serviceAction {
-        turnToasterOn, turnToasterOff, isToasting, putBreadInToaster, STATUS,;
+        turnToasterOn, turnToasterOff, isToasting, putBreadInToaster, STATUS, toasting, finishToasting;
     }
 
     private serviceAction action;
