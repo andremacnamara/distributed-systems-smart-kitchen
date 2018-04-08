@@ -14,7 +14,7 @@ package models;
 public class OvenModel {
 
     public enum serviceAction {
-        increaseTemp, decreaseTemp, turnOvenOff, turnOvenOn, STATUS;
+        increaseTemp, decreaseTemp, turnOvenOff, putFoodInOven, turnOvenOn,  STATUS;
     }
 
     private serviceAction action;

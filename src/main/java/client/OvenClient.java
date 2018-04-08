@@ -25,7 +25,10 @@ public class OvenClient extends Client {
     private String decreaseTemp  = "decreaseTempreature";
     private String turnOvenOn  = "turnOvenOn";
     private String turnOvenOff = "turnOvenOff";
+    private String putFoodInOven = "putFoodInOven";
     private boolean isWarming    = false;
+    private boolean isCooking = false;
+    
     
     /*
     * Constructor
@@ -75,7 +78,7 @@ public class OvenClient extends Client {
         }
     }
     
-    public void turnLightsOn(){
+    public void turnOvenOn(){
         String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnOvenOn));
         String message = sendMessage(json);
         OvenModel oven = new Gson().fromJson(message, OvenModel.class);
@@ -87,10 +90,28 @@ public class OvenClient extends Client {
         }
     }
     
+     public void putFoodInOven(){
+        String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.putFoodInOven));
+        String message = sendMessage(json);
+        OvenModel oven = new Gson().fromJson(message, OvenModel.class);
+        System.out.println("Client Recieved " + json);
+        
+        if(oven.getAction() == OvenModel.serviceAction.putFoodInOven){
+            isCooking = oven.getValue();
+            ui.updateArea(oven.getMessage());
+        }
+    }
+    
     @Override
     public void updatePoll(String message) {
         if (message.equals("Oven is 100% warmed.")) {
             isWarming = false;
+        }
+    }
+    
+     public void updatePoll2(String message) {
+        if (message.equals("Food is 100 percent cooked.")) {
+            isCooking = false;
         }
     }
 
