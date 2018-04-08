@@ -46,21 +46,21 @@ public class OvenService extends Service {
             sendBack(json);
         } else if (oven.getAction() == OvenModel.serviceAction.increaseTemp) {
             increaseTemp();
-            String message = (tempIncreaseing) ? "The oven tempreature is increasing by 1c!" : "Sorry you cannot increase the tempreature. Oven is at Max tempreature!";
+            String message = (tempIncreaseing) ? "The oven tempreature is increasing by 50c!" : "Sorry you cannot increase the tempreature. Oven is at Max tempreature!";
             String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.increaseTemp, message));
             System.out.println(json);
             sendBack(json);
 
-            String serviceMessage = (tempIncreaseing) ? "The oven is increasing by 1c!" : "Sorry: oven is at the max temp";
+            String serviceMessage = (tempIncreaseing) ? "The oven is increasing by 50c!" : "Sorry: oven is at the max temp";
             ui.updateArea(serviceMessage);
         } else if (oven.getAction() == OvenModel.serviceAction.decreaseTemp) {
             decreaseTemp();
-            String message = (tempDecreasing) ? "The Oven is cooling down by 1c!" : "Sorry you cannot decrease the tempreature, Oven is at the minimum tempreature!";
+            String message = (tempDecreasing) ? "The Oven is cooling down by 50c!" : "Sorry you cannot decrease the tempreature, Oven is at the minimum tempreature!";
             String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.decreaseTemp, message));
             System.out.println(json);
             sendBack(json);
 
-            String serviceMessage = (tempDecreasing) ? "The oven is decreasing by 1c!" : "Sorry: Oven is at the max temp";
+            String serviceMessage = (tempDecreasing) ? "The oven is decreasing by 50c!" : "Sorry: Oven is at the max temp";
             ui.updateArea(serviceMessage);
         }
         
