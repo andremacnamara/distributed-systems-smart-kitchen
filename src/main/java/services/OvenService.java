@@ -64,10 +64,10 @@ public class OvenService extends Service {
             ui.updateArea(serviceMessage);
         }
         
-         else if (oven.getAction() == OvenModel.serviceAction.turnLightsOff) {
-            turnLightsOff();
+         else if (oven.getAction() == OvenModel.serviceAction.turnOvenOff) {
+            turnOvenOff();
             String message = (off) ? "The Oven has been turned off" : "The Oven is currently off";
-            String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnLightsOff, message));
+            String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnOvenOff, message));
             System.out.println(json);
             sendBack(json);
 
@@ -75,10 +75,10 @@ public class OvenService extends Service {
             ui.updateArea(serviceMessage);
         }
          
-        else if (oven.getAction() == OvenModel.serviceAction.turnLightsOn) {
-            turnLightsOn();
+        else if (oven.getAction() == OvenModel.serviceAction.turnOvenOn) {
+            turnOvenOn();
             String message = (on) ? "The Oven has been turned on" : "The Oven is on";
-            String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnLightsOn, message));
+            String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnOvenOn, message));
             System.out.println(json);
             sendBack(json);
 
@@ -108,14 +108,14 @@ public class OvenService extends Service {
         }
     }
     
-    public void turnLightsOff() {
+    public void turnOvenOff() {
         if (power >= 0) {
             power = 0;
             System.out.println("Power Off. Oven is off");
         }
     }
 
-    public void turnLightsOn() {
+    public void turnOvenOn() {
         if (power <= 0) {
             power += 100;
             System.out.println("The power level is" +power + ". The Oven is on.");

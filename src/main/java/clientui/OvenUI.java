@@ -18,8 +18,8 @@ public class OvenUI extends ClientUI {
     private static final long serialVersionUID = -5318589393275157185L;
     private JButton increase;
     private JButton decrease;
-    private JButton turnLightsOn;
-    private JButton turnLightsOff;
+    private JButton turnOvenOn;
+    private JButton turnOvenOff;
     private final OvenClient ovenClientRef;
 
     public OvenUI(OvenClient ovenClient) {
@@ -41,15 +41,15 @@ public class OvenUI extends ClientUI {
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
         add(new JButton[]{decrease});
         
-        turnLightsOff = new JButton("Turn Oven Off");
-        turnLightsOff.setEnabled(false);
+        turnOvenOff = new JButton("Turn Oven Off");
+        turnOvenOff.setEnabled(false);
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
-        add(new JButton[]{turnLightsOff});
+        add(new JButton[]{turnOvenOff});
 
-        turnLightsOn = new JButton("Turn Oven On");
-        turnLightsOn.setEnabled(true);
+        turnOvenOn = new JButton("Turn Oven On");
+        turnOvenOn.setEnabled(true);
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
-        add(new JButton[]{turnLightsOn});
+        add(new JButton[]{turnOvenOn});
     }
 
     @Override
@@ -58,18 +58,18 @@ public class OvenUI extends ClientUI {
             ovenClientRef.increaseTemp();
         } else if (e.getSource() == decrease) {
             ovenClientRef.decreaseTemp();
-        } else if (e.getSource() == turnLightsOff) {
-            ovenClientRef.turnLightsOff();
+        } else if (e.getSource() == turnOvenOff) {
+            ovenClientRef.turnOvenOff();
             increase.setEnabled(false);
             decrease.setEnabled(false);
-            turnLightsOff.setEnabled(false);
-            turnLightsOn.setEnabled(true);
-        } else if (e.getSource() == turnLightsOn) {
+            turnOvenOff.setEnabled(false);
+            turnOvenOn.setEnabled(true);
+        } else if (e.getSource() == turnOvenOn) {
             ovenClientRef.turnLightsOn();
             increase.setEnabled(true);
             decrease.setEnabled(true);
-            turnLightsOff.setEnabled(true);
-            turnLightsOn.setEnabled(false);
+            turnOvenOff.setEnabled(true);
+            turnOvenOn.setEnabled(false);
         }
     }
 }
