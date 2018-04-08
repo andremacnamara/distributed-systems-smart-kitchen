@@ -23,8 +23,8 @@ import com.google.gson.Gson;
 public class OvenClient extends Client {
     private String increaseTemp  = "increaseTempreature";
     private String decreaseTemp  = "decreaseTempreature";
-    private String turnLightsOn  = "turnLightsOn";
-    private String turnLightsOff = "turnLightsOff";
+    private String turnOvenOn  = "turnOvenOn";
+    private String turnOvenOff = "turnOvenOff";
     private boolean isWarming    = false;
     
     /*
@@ -63,25 +63,25 @@ public class OvenClient extends Client {
         }
     }
     
-    public void turnLightsOff(){
-        String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnLightsOff));
+    public void turnOvenOff(){
+        String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnOvenOff));
         String message = sendMessage(json);
         OvenModel oven = new Gson().fromJson(message, OvenModel.class);
         System.out.println("Client Recieved " + json);
         
-        if(oven.getAction() == OvenModel.serviceAction.turnLightsOff){
+        if(oven.getAction() == OvenModel.serviceAction.turnOvenOff){
             isWarming = oven.getValue();
             ui.updateArea(oven.getMessage());
         }
     }
     
     public void turnLightsOn(){
-        String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnLightsOn));
+        String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnOvenOn));
         String message = sendMessage(json);
         OvenModel oven = new Gson().fromJson(message, OvenModel.class);
         System.out.println("Client Recieved " + json);
         
-        if(oven.getAction() == OvenModel.serviceAction.turnLightsOn){
+        if(oven.getAction() == OvenModel.serviceAction.turnOvenOn){
             isWarming = oven.getValue();
             ui.updateArea(oven.getMessage());
         }
