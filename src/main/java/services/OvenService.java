@@ -110,7 +110,7 @@ public class OvenService extends Service {
         }
     }
     
-       public void putBreadInToaster(){
+       public void putFoodInOven(){
         if(FoodLevel <= 0){
             foodInOven = true;
             FoodLevel = 4;
