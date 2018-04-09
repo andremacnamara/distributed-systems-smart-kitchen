@@ -20,7 +20,9 @@ public class FridgeService extends Service {
     private int minTemp;
     private int fridgeTemp;
     private int power;
-    private static boolean tempIncreaseing, tempDecreasing, on, off;
+    private int iceLevel;
+    private int maxIceLevel;
+    private static boolean tempIncreaseing, tempDecreasing, on, off, iceDispensing;
 
     public FridgeService(String serviceName) {
         super(serviceName, "_fridge._udp.local.");
@@ -32,6 +34,9 @@ public class FridgeService extends Service {
         tempDecreasing = false;
         on = false;
         off = true;
+        iceDispensing=false;
+        iceLevel = 0;
+        maxIceLevel = 3;
         ui = new ServiceUI(this, serviceName);
     }
 
@@ -85,6 +90,17 @@ public class FridgeService extends Service {
             String serviceMessage = (on) ? "The fridge has turned on" : "Fridge is on";
             ui.updateArea(serviceMessage);
         }
+        
+        else if (fridge.getAction() == FridgeModel.serviceAction.dispenseIce) {
+            dispenseIce();
+            String message = (on) ? "The ice is dispensing" : "The ice has finished dispensing";
+            String json = new Gson().toJson(new FridgeModel(FridgeModel.serviceAction.dispenseIce, message));
+            System.out.println(json);
+            sendBack(json);
+
+            String serviceMessage = (on) ? "The ice is dispensing" : "The ice has finished dispensing";
+            ui.updateArea(serviceMessage);
+        }
         else {
             sendBack(BAD_COMMAND + " - " +a);
         }
@@ -122,10 +138,26 @@ public class FridgeService extends Service {
         }
     }
     
+    public void dispenseIce(){
+        if(iceLevel <= 0){
+            iceDispensing = true;
+            iceLevel +=1;
+        } else if (iceLevel == maxIceLevel) {
+            iceDispensing = false;
+        }
+    }
+    
 
     @Override
     public String getStatus() {
-        return "The current tempreature is " + fridgeTemp; 
+        String message = "";
+        if(iceDispensing = true && maxIceLevel <=3){
+            message = "Ice currently Dispensing";
+        } else if (iceDispensing = false && maxIceLevel == 3) {
+            message = "The maximum amount of ice has been dispensed";
+        }
+        // "The current tempreature is " + fridgeTemp; 
+        return message;
     }
     
     public static void main(String[] args){

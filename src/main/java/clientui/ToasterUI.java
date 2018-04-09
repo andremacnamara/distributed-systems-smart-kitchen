@@ -79,6 +79,7 @@ public class ToasterUI extends ClientUI{
             toasterClientRef.Toasting();
             toast.setEnabled(false);
             putBreadInToaster.setEnabled(false);
+           
             finishToasting.setEnabled(true);
         } else if (e.getSource() == finishToasting){
             toasterClientRef.finishToasting();
