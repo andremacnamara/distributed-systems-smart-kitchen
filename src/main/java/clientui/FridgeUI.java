@@ -20,6 +20,7 @@ public class FridgeUI extends ClientUI {
     private JButton decrease;
     private JButton turnLightsOn;
     private JButton turnLightsOff;
+    private JButton dispenseIce;
     private final FridgeClient fridgeClientRef;
 
     public FridgeUI(FridgeClient fridgeClient) {
@@ -50,6 +51,11 @@ public class FridgeUI extends ClientUI {
         turnLightsOn.setEnabled(true);
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
         add(new JButton[]{turnLightsOn});
+        
+        dispenseIce = new JButton("Dispense Ice");
+        dispenseIce.setEnabled(false);
+        scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
+        add(new JButton[]{dispenseIce});
     }
 
     @Override
@@ -69,7 +75,11 @@ public class FridgeUI extends ClientUI {
             increase.setEnabled(true);
             decrease.setEnabled(true);
             turnLightsOff.setEnabled(true);
+            dispenseIce.setEnabled(true);
             turnLightsOn.setEnabled(false);
+        } else if (e.getSource() == dispenseIce){
+            fridgeClientRef.dispenseIce();
+            dispenseIce.setEnabled(false);
         }
     }
 }

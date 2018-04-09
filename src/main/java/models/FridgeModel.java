@@ -14,7 +14,7 @@ package models;
 public class FridgeModel {
 
     public enum serviceAction {
-        increaseTemp, decreaseTemp, turnLightsOff, turnLightsOn, STATUS;
+        increaseTemp, decreaseTemp, turnLightsOff, turnLightsOn, dispenseIce, STATUS;
         // turnToasterOn, turnToasterOff, isToasting, STATUS;
     }
 
