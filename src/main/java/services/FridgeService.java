@@ -109,6 +109,7 @@ public class FridgeService extends Service {
     public void increaseTemp(){
         if(fridgeTemp != maxTemp){
             tempIncreaseing = true;
+            iceDispensing = false;
             fridgeTemp += 1;
         } else {
             tempIncreaseing = false;
@@ -119,6 +120,7 @@ public class FridgeService extends Service {
         if(fridgeTemp != minTemp){
             tempDecreasing = true;
             fridgeTemp -= 1;
+            iceDispensing = false;
         } else {
             tempDecreasing = false;
         }
@@ -127,6 +129,7 @@ public class FridgeService extends Service {
     public void turnLightsOff() {
         if (power >= 0) {
             power = 0;
+            iceDispensing = false;
             System.out.println("Power Off. Fridge is off");
         }
     }
@@ -134,6 +137,7 @@ public class FridgeService extends Service {
     public void turnLightsOn() {
         if (power <= 0) {
             power += 100;
+            iceDispensing = false;
             System.out.println("The power level is" +power + ". The Fridge is on.");
         }
     }
@@ -142,7 +146,7 @@ public class FridgeService extends Service {
         if(iceLevel <= 0){
             iceDispensing = true;
             iceLevel +=1;
-        } else if (iceLevel == maxIceLevel) {
+        } else {
             iceDispensing = false;
         }
     }
@@ -151,12 +155,13 @@ public class FridgeService extends Service {
     @Override
     public String getStatus() {
         String message = "";
-        if(iceDispensing = true && maxIceLevel <=3){
+        if(iceDispensing == true){
             message = "Ice currently Dispensing";
-        } else if (iceDispensing = false && maxIceLevel == 3) {
-            message = "The maximum amount of ice has been dispensed";
+        } else if (iceDispensing = false) {
+            message = "You have finished dispensing ice";
         }
-        // "The current tempreature is " + fridgeTemp; 
+        
+        message = "The current tempreature is" + fridgeTemp;
         return message;
     }
     
