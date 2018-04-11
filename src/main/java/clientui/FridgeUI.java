@@ -79,7 +79,6 @@ public class FridgeUI extends ClientUI {
             turnLightsOn.setEnabled(false);
         } else if (e.getSource() == dispenseIce){
             fridgeClientRef.dispenseIce();
-            dispenseIce.setEnabled(false);
         }
     }
 }

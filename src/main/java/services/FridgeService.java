@@ -93,12 +93,12 @@ public class FridgeService extends Service {
         
         else if (fridge.getAction() == FridgeModel.serviceAction.dispenseIce) {
             dispenseIce();
-            String message = (on) ? "The ice is dispensing" : "The ice has finished dispensing";
+            String message = (on) ? "The ice is dispensing" : "Sorry, Ice is at the maximum level";
             String json = new Gson().toJson(new FridgeModel(FridgeModel.serviceAction.dispenseIce, message));
             System.out.println(json);
             sendBack(json);
 
-            String serviceMessage = (on) ? "The ice is dispensing" : "The ice has finished dispensing";
+            String serviceMessage = (on) ? "The ice is dispensing" : "Sorry, Ice is at the maximum level";
             ui.updateArea(serviceMessage);
         }
         else {
@@ -142,10 +142,19 @@ public class FridgeService extends Service {
         }
     }
     
+//    public void dispenseIce(){
+//        if(iceLevel <= 0){
+//            iceDispensing = true;
+//            iceLevel +=1;
+//        } else {
+//            iceDispensing = false;
+//        }
+//    }
+//    
     public void dispenseIce(){
-        if(iceLevel <= 0){
+        if(iceLevel != maxIceLevel){
             iceDispensing = true;
-            iceLevel +=1;
+            iceLevel += 1;
         } else {
             iceDispensing = false;
         }
@@ -155,12 +164,17 @@ public class FridgeService extends Service {
     @Override
     public String getStatus() {
         String message = "";
-        if(iceDispensing == true){
-            message = "Ice currently Dispensing";
-        } else if (iceDispensing = false) {
-            message = "You have finished dispensing ice";
-        }
-        
+//        if(iceDispensing == true){
+//            message = "Ice currently Dispensing";
+//        } else if (iceDispensing = false) {
+//            message = "You have finished dispensing ice";
+//        }
+         if (iceLevel > 0 && iceLevel < 4) {
+            if (iceDispensing=true){
+                message = "Ice Level is " + iceLevel;
+            }
+         }
+                 
         message = "The current tempreature is" + fridgeTemp;
         return message;
     }
