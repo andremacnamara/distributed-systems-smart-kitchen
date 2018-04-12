@@ -20,7 +20,8 @@ import com.google.gson.Gson;
 public class PrinterClient extends Client {
     private String turnPrinterOn  = "turnPrinterOn";
     private String turnPrinterff = "turnPrinterOff";
-    private boolean isLoading  = false;
+    private String putPaperInPrinter = "putPaperInPrinter";
+    private boolean isPrinting  = false;
    
     /*
     * Constructor
@@ -40,7 +41,7 @@ public class PrinterClient extends Client {
         System.out.println("Client Recieved " + json);
         
         if(printer.getAction() == PrinterModel.serviceAction.turnPrinterOff){
-            isLoading = printer.getValue();
+            isPrinting = printer.getValue();
             ui.updateArea(printer.getMessage());
         }
     }
@@ -52,24 +53,57 @@ public class PrinterClient extends Client {
         System.out.println("Client Recieved " + json);
         
         if(printer.getAction() == PrinterModel.serviceAction.turnPrinterOn){
-            isLoading = printer.getValue();
+            isPrinting = printer.getValue();
             ui.updateArea(printer.getMessage());
         }
     }
+     public void Printing(){
+        String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.printing));
+        String message = sendMessage(json);
+        PrinterModel printer = new Gson().fromJson(message, PrinterModel.class);
+        System.out.println("Client Recieved " + json);
+        
+        if(printer.getAction() == PrinterModel.serviceAction.printing){
+            isPrinting = printer.getValue();
+            ui.updateArea(printer.getMessage());
+        }
+    }
+      public void putPaperInPrinter(){
+        String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.putPaperInPrinter));
+        String message = sendMessage(json);
+        PrinterModel toaster = new Gson().fromJson(message, PrinterModel.class);
+        System.out.println("Client Recieved " + json);
+        
+        if(toaster.getAction() == PrinterModel.serviceAction.putPaperInPrinter){
+            isPrinting = toaster.getValue();
+            ui.updateArea(toaster.getMessage());
+        }
+    }
     
-  
-    
+    public void finishPrinting(){
+        String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.finishPrinting));
+        String message = sendMessage(json);
+        PrinterModel printer = new Gson().fromJson(message, PrinterModel.class);
+        System.out.println("Client Recieved " + json);
+        
+        if(printer.getAction() == PrinterModel.serviceAction.finishPrinting){
+            isPrinting = printer.getValue();
+            ui.updateArea(printer.getMessage());
+        }
+    }
+   
+   
     @Override
     public void updatePoll(String message) {
-        if (message.equals("Printer is 100% loaded")) {
-            isLoading = false;
+        if (message.equals("Print Successful")) {
+            isPrinting = false;
         }
     }
     @Override
     public void disable() {
         super.disable();
         ui = new PrinterUI(this);
-        isLoading = false;
+        isPrinting = false;
     }
     
     
