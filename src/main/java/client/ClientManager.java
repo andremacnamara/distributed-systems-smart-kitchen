@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package client;
 
-/**
+/*
  *
- * @author x14380181
+ * @reference Dominic Carr https://moodle.ncirl.ie/mod/resource/view.php?id=54977													/example.java
+ *
  */
+
 import java.io.IOException;
 
 import javax.jmdns.JmDNS;
@@ -26,11 +23,11 @@ public class ClientManager implements ServiceListener {
 
     private final ClientManagerUI ui;
     private JmDNS jmdns;
-    //private final BedClient client = new BedClient();
 
     private ArrayList<Client> clients;
 
     public ClientManager() {
+        //Adding each sevice to arraylist
         clients = new ArrayList<>();
         clients.add(new FridgeClient());
         clients.add(new ToasterClient());
@@ -38,6 +35,7 @@ public class ClientManager implements ServiceListener {
         clients.add(new PrinterClient());
 
         try {
+            //Trying to search/connect services from client manager.
             jmdns = JmDNS.create(InetAddress.getLocalHost());
             for (Client client : clients){
             jmdns.addServiceListener(client.getServiceType(), this);

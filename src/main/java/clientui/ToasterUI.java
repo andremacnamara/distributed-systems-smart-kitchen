@@ -8,6 +8,15 @@ import client.ToasterClient;
  *
  * @author andre
  */
+
+/*
+ *
+ * @reference Dominic Carr 
+ * https://moodle.ncirl.ie/mod/resource/view.php?id=54977													/example.java
+ *
+ */
+
+
 public class ToasterUI extends ClientUI{
     private static final long serialVersionUID = -5318589393275157185L;
     private JButton turnToasterOn;

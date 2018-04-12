@@ -15,12 +15,20 @@ import com.google.gson.Gson;
  * @author x14380181
  */
 
-/* @reference 
-*  Dominic Carr https://moodle.ncirl.ie/mod/resource/view.php?id=53562
-*/
+/*
+ *
+ * @reference Dominic Carr 
+ * https://moodle.ncirl.ie/mod/resource/view.php?id=54977													/example.java
+ *
+ */
 
+/*
+ *http://www.vogella.com/tutorials/JavaLibrary-Gson/article.html
+ *Vogella
+ */
 
 public class FridgeClient extends Client {
+    //Actions the fridge can do
     private String increaseTemp  = "increaseTempreature";
     private String decreaseTemp  = "decreaseTempreature";
     private String turnLightsOn  = "turnLightsOn";
@@ -29,8 +37,10 @@ public class FridgeClient extends Client {
     private String lockIce     = "lockIce";
     private boolean isWarming    = false;
     
+    
     /*
     * Constructor
+    * Sets services as UDP
     */
     
     public FridgeClient(){
@@ -40,7 +50,7 @@ public class FridgeClient extends Client {
         name = "Fridge";
     }
     
-    
+    //Json Conversion
     public void increaseTemp(){
         String json = new Gson().toJson(new FridgeModel(FridgeModel.serviceAction.increaseTemp));
         String message = sendMessage(json);
@@ -108,6 +118,19 @@ public class FridgeClient extends Client {
         System.out.println("Client Recieved " + json);
         
         if(fridge.getAction() == FridgeModel.serviceAction.lockIce){
+            isWarming = fridge.getValue();
+            ui.updateArea(fridge.getMessage());
+        }
+        
+    }
+    
+    public void unlockIce(){
+        String json = new Gson().toJson(new FridgeModel(FridgeModel.serviceAction.unlockIce));
+        String message = sendMessage(json);
+        FridgeModel fridge = new Gson().fromJson(message, FridgeModel.class);
+        System.out.println("Client Recieved " + json);
+        
+        if(fridge.getAction() == FridgeModel.serviceAction.unlockIce){
             isWarming = fridge.getValue();
             ui.updateArea(fridge.getMessage());
         }

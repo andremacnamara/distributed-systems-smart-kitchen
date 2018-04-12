@@ -9,6 +9,15 @@ package clientui;
  *
  * @author x14380181
  */
+
+/*
+ *
+ * @reference Dominic Carr 
+ * https://moodle.ncirl.ie/mod/resource/view.php?id=54977													/example.java
+ *
+ */
+
+
 import client.ClientManager;
 import java.awt.Component;
 import java.awt.Dimension;

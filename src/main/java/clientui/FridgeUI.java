@@ -13,6 +13,15 @@ import client.FridgeClient;
  *
  * @author x14380181
  */
+
+/*
+ *
+ * @reference Dominic Carr 
+ * https://moodle.ncirl.ie/mod/resource/view.php?id=54977													/example.java
+ *
+ */
+
+
 public class FridgeUI extends ClientUI {
 
     private static final long serialVersionUID = -5318589393275157185L;
@@ -22,6 +31,7 @@ public class FridgeUI extends ClientUI {
     private JButton turnLightsOff;
     private JButton dispenseIce;
     private JButton lockIce;
+    private JButton unlockIce;
     private final FridgeClient fridgeClientRef;
 
     public FridgeUI(FridgeClient fridgeClient) {
@@ -61,7 +71,12 @@ public class FridgeUI extends ClientUI {
         lockIce = new JButton("Lock Ice");
         lockIce.setEnabled(false);
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
-        add(new JButton[]{dispenseIce});
+        add(new JButton[]{lockIce});
+        
+        unlockIce = new JButton("Unlock Ice");
+        unlockIce.setEnabled(false);
+        scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
+        add(new JButton[]{unlockIce});
     }
 
     @Override
@@ -74,6 +89,7 @@ public class FridgeUI extends ClientUI {
             fridgeClientRef.turnLightsOff();
             increase.setEnabled(false);
             decrease.setEnabled(false);
+            lockIce.setEnabled(false);
             turnLightsOff.setEnabled(false);
             turnLightsOn.setEnabled(true);
         } else if (e.getSource() == turnLightsOn) {
@@ -83,10 +99,19 @@ public class FridgeUI extends ClientUI {
             turnLightsOff.setEnabled(true);
             dispenseIce.setEnabled(true);
             turnLightsOn.setEnabled(false);
+            lockIce.setEnabled(true);
         } else if (e.getSource() == dispenseIce){
             fridgeClientRef.dispenseIce();
-        } else if e.getSource() == lockIce){
+        } else if (e.getSource() == lockIce){
             fridgeClientRef.lockIce();
+            lockIce.setEnabled(false);
+            unlockIce.setEnabled(true);
+            dispenseIce.setEnabled(false);
+        } else if (e.getSource() == unlockIce){
+            fridgeClientRef.unlockIce();
+            lockIce.setEnabled(true);
+            unlockIce.setEnabled(false);
+            dispenseIce.setEnabled(true);
         }
     }
 }
