@@ -18,6 +18,7 @@ public class PrinterUI extends ClientUI {
     private static final long serialVersionUID = -5318589393275157185L;
     private JButton turnPrinterOn;
     private JButton turnPrinterOff;
+    private JButton Print;
     private final PrinterClient printerClientRef;
 
     public PrinterUI(PrinterClient printerClient) {
@@ -39,6 +40,11 @@ public class PrinterUI extends ClientUI {
         turnPrinterOn.setEnabled(true);
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
         add(new JButton[]{turnPrinterOn});
+        
+        Print = new JButton("Print");
+        Print.setEnabled(true);
+        scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
+        add(new JButton[]{Print});
          
     }
 
@@ -54,6 +60,12 @@ public class PrinterUI extends ClientUI {
             printerClientRef.turnPrinterOn();
             turnPrinterOff.setEnabled(true);
             turnPrinterOn.setEnabled(false);
+            
+        }
+       else if (e.getSource() == Print) {
+            printerClientRef.turnPrinterOn();
+            Print.setEnabled(true);
+            Print.setEnabled(false);
             
         }
     }

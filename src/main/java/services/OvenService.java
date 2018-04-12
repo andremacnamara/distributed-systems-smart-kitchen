@@ -21,18 +21,19 @@ public class OvenService extends Service {
     private int ovenTemp;
     private int power;
     private int FoodLevel;
-    private static boolean tempIncreaseing, tempDecreasing, on, off, foodInOven;
+    private static boolean tempIncreaseing, tempDecreasing, TurnOvenOn, TurnOvenOff, foodInOven;
 
     public OvenService(String serviceName) {
         super(serviceName, "_oven._udp.local.");
         maxTemp = 200;
         minTemp = 0;
-        ovenTemp = 50;
+        ovenTemp = 0;
         power = 0;
+        foodInOven = false;
         tempIncreaseing = false;
         tempDecreasing = false;
-        on = false;
-        off = true;
+        TurnOvenOn = false;
+        TurnOvenOff = true;
         FoodLevel = 0;
         ui = new ServiceUI(this, serviceName);
     }
@@ -65,28 +66,38 @@ public class OvenService extends Service {
             String serviceMessage = (tempDecreasing) ? "The oven is decreasing by 50c!" : "Sorry: Oven is at the max temp";
             ui.updateArea(serviceMessage);
         }
-        
-         else if (oven.getAction() == OvenModel.serviceAction.turnOvenOff) {
-            turnOvenOff();
-            String message = (off) ? "The Oven has been turned off" : "The Oven is currently off";
-            String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnOvenOff, message));
+         else if (oven.getAction() == OvenModel.serviceAction.putFoodInOven) {
+            putFoodInOven();
+            String message = (foodInOven) ? "The food is in the oven" : "There is currently food in the toaster";
+            String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.putFoodInOven, message));
             System.out.println(json);
             sendBack(json);
 
-            String serviceMessage = (off) ? "Oven turned off" : "Oven is off";
+            String serviceMessage = (foodInOven) ? "The food is in the oven" : "There is currently food in the oven";
             ui.updateArea(serviceMessage);
-        }
-         
-        else if (oven.getAction() == OvenModel.serviceAction.turnOvenOn) {
+         }
+ 
+          else if (oven.getAction() == OvenModel.serviceAction.turnOvenOn) {
             turnOvenOn();
-            String message = (on) ? "The Oven has been turned on" : "The Oven is on";
+            String message = (TurnOvenOn) ? "The oven has been turned On" : "The oven is currently On";
             String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnOvenOn, message));
             System.out.println(json);
             sendBack(json);
 
-            String serviceMessage = (on) ? "The oven has turned on" : "oven is on";
+            String serviceMessage = (TurnOvenOn) ? "Oven is turned On" : "Oven is On";
             ui.updateArea(serviceMessage);
         }
+           else if (oven.getAction() == OvenModel.serviceAction.turnOvenOff) {
+            turnOvenOff();
+            String message = (TurnOvenOff) ? "The Oven has been turned off" : "The Oven is currently off";
+            String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnOvenOff, message));
+            System.out.println(json);
+            sendBack(json);
+
+            String serviceMessage = (TurnOvenOff) ? "Oven turned off" : "Oven is off";
+            ui.updateArea(serviceMessage);
+        }
+           
         else {
             sendBack(BAD_COMMAND + " - " +a);
         }

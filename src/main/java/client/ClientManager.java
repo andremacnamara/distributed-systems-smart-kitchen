@@ -35,6 +35,7 @@ public class ClientManager implements ServiceListener {
         clients.add(new FridgeClient());
         clients.add(new ToasterClient());
         clients.add(new OvenClient());
+        clients.add(new PrinterClient());
 
         try {
             jmdns = JmDNS.create(InetAddress.getLocalHost());
