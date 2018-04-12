@@ -50,7 +50,7 @@ public class ToasterService extends Service {
             System.out.println(json);
             sendBack(json);
 
-            String serviceMessage = (turnToasterOn) ? "Toaster turned on!" : "Fridge is on!";
+            String serviceMessage = (turnToasterOn) ? "Toaster turned on!" : "Toaster is on!";
             ui.updateArea(serviceMessage);
         } else if (toaster.getAction() == ToasterModel.serviceAction.turnToasterOff) {
             turnToasterOff();
@@ -83,7 +83,7 @@ public class ToasterService extends Service {
         }
         else if (toaster.getAction() == ToasterModel.serviceAction.finishToasting) {
             finishToasting();
-            String message = (toasting) ? "The bread is finished toasting" : "The final toast tempreature is " + toastLevelPercent + "Please take your toast";
+            String message = (toasting) ? "The bread is finished toasting" : "The final toast tempreature is " + toastLevelPercent + "\nPlease take your toast";
             String json = new Gson().toJson(new ToasterModel(ToasterModel.serviceAction.finishToasting, message));
             System.out.println(json);
             sendBack(json);
@@ -175,7 +175,7 @@ public class ToasterService extends Service {
         } 
         
         else if (toastLevelPercent > 0 && toastLevelPercent < 100) {
-            if (toasting=true){
+            if ((toasting=true) && (isRunning = true)){
                 message = "Bread is " + toastLevelPercent + " degrees celsius";
             } 
             
