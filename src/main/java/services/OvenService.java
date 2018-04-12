@@ -68,7 +68,7 @@ public class OvenService extends Service {
         }
          else if (oven.getAction() == OvenModel.serviceAction.putFoodInOven) {
             putFoodInOven();
-            String message = (foodInOven) ? "The food is in the oven" : "There is currently food in the toaster";
+            String message = (foodInOven) ? "The food is in the oven" : "There is currently food in the oven";
             String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.putFoodInOven, message));
             System.out.println(json);
             sendBack(json);
