@@ -6,10 +6,13 @@
 package models;
 
 /**
- *
  * @author x14380181
- *
  * Andre MacNamara
+ */
+
+/*
+ *http://www.vogella.com/tutorials/JavaLibrary-Gson/article.html
+ *Vogella
  */
 public class ToasterModel {
 
@@ -17,6 +20,11 @@ public class ToasterModel {
         turnToasterOn, turnToasterOff, isToasting, putBreadInToaster, STATUS, toasting, finishToasting;
     }
 
+    
+    //Action, message printed out to user, and value.
+    //Getters and Setters
+    
+    
     private serviceAction action;
     private String message;
     private boolean value;

@@ -12,7 +12,20 @@ import servicesui.ServiceUI;
 /**
  *
  * @author x14380181
+ 
+ * 
+ * /*
+ *
+ * @reference Dominic Carr 
+ * https://moodle.ncirl.ie/mod/resource/view.php?id=54977													/example.java
+ *
  */
+
+/*
+ *http://www.vogella.com/tutorials/JavaLibrary-Gson/article.html
+ *Vogella
+ */
+
 public class FridgeService extends Service {
     //Fridge Service Branch
 
@@ -22,7 +35,7 @@ public class FridgeService extends Service {
     private int power;
     private int iceLevel;
     private int maxIceLevel;
-    private static boolean tempIncreaseing, tempDecreasing, on, off, iceDispensing, lockIce;
+    private static boolean tempIncreaseing, tempDecreasing, on, off, iceDispensing, lockIce, unlockIce;
 
     public FridgeService(String serviceName) {
         super(serviceName, "_fridge._udp.local.");
@@ -38,9 +51,13 @@ public class FridgeService extends Service {
         iceLevel = 0;
         maxIceLevel = 3;
         lockIce = false;
+        unlockIce = false;
         ui = new ServiceUI(this, serviceName);
     }
 
+    //Gson/Json method ction messages
+    
+    
     @Override
     protected void performAction(String a) {
         System.out.println("Connected with service: " + a);
@@ -50,6 +67,8 @@ public class FridgeService extends Service {
             String message = getStatus();
             String json = new Gson().toJson(new FridgeModel(FridgeModel.serviceAction.STATUS, message));
             sendBack(json);
+            
+            //Increase Tempreature
         } else if (fridge.getAction() == FridgeModel.serviceAction.increaseTemp) {
             increaseTemp();
             String message = (tempIncreaseing) ? "The Fridge tempreature is increasing by 1c!" : "Sorry you cannot increase the tempreature. Fridge is at Max tempreature!";
@@ -59,6 +78,8 @@ public class FridgeService extends Service {
 
             String serviceMessage = (tempIncreaseing) ? "The fridge is increasing by 1c!" : "Sorry: Fridge is at the max temp";
             ui.updateArea(serviceMessage);
+            
+            //Decrease Tempreature
         } else if (fridge.getAction() == FridgeModel.serviceAction.decreaseTemp) {
             decreaseTemp();
             String message = (tempDecreasing) ? "The Room is cooling down by 1c!" : "Sorry you cannot decrease the tempreature, Fridge is at the minimum tempreature!";
@@ -70,6 +91,7 @@ public class FridgeService extends Service {
             ui.updateArea(serviceMessage);
         }
         
+          //Turn Lights On
          else if (fridge.getAction() == FridgeModel.serviceAction.turnLightsOff) {
             turnLightsOff();
             String message = (off) ? "The Fridge has been turned off" : "The Fridge is currently off";
@@ -81,6 +103,7 @@ public class FridgeService extends Service {
             ui.updateArea(serviceMessage);
         }
          
+        //Turn Lights Off
         else if (fridge.getAction() == FridgeModel.serviceAction.turnLightsOn) {
             turnLightsOn();
             String message = (on) ? "The Fridge has been turned on" : "The fridge is on";
@@ -92,6 +115,7 @@ public class FridgeService extends Service {
             ui.updateArea(serviceMessage);
         }
         
+        //Dispense Ice
         else if (fridge.getAction() == FridgeModel.serviceAction.dispenseIce) {
             dispenseIce();
             String message = (iceDispensing) ? "The ice is dispensing" : "Sorry, Ice is at the maximum level";
@@ -103,21 +127,36 @@ public class FridgeService extends Service {
             ui.updateArea(serviceMessage);
         }
         
+        //Lock Ice
         else if (fridge.getAction() == FridgeModel.serviceAction.lockIce){
             lockIce();
             String message = (lockIce) ? "The ice has locked" : "The ice is already locked";
-            String json = new Gson().toJson(new FridgeModel(FridgeModel.serviceAction.dispenseIce, message));
+            String json = new Gson().toJson(new FridgeModel(FridgeModel.serviceAction.lockIce, message));
             System.out.println(json);
             sendBack(json);
             
             String serviceMessage = (iceDispensing) ? "The ice has locked" : "The ice is already locked";
             ui.updateArea(serviceMessage);
         }
+        
+        //Unlock Ice
+        else if (fridge.getAction() == FridgeModel.serviceAction.unlockIce){
+            unlockIce();
+            String message = (unlockIce) ? "The ice is unlocked" : "The ice is unlocked";
+            String json = new Gson().toJson(new FridgeModel(FridgeModel.serviceAction.unlockIce, message));
+            System.out.println(json);
+            sendBack(json);
+            
+            String serviceMessage = (unlockIce) ? "The ice is unlocked" : "The ice is unlocked";
+            ui.updateArea(serviceMessage);
+        }
+        
         else {
             sendBack(BAD_COMMAND + " - " +a);
         }
     }
     
+    //Method Logic
     public void increaseTemp(){
         if(fridgeTemp != maxTemp){
             tempIncreaseing = true;
@@ -177,25 +216,29 @@ public class FridgeService extends Service {
         lockIce = true;
     }
     
+    public void unlockIce(){
+        iceDispensing = true;
+        lockIce = false;
+    }
+    
 
+    
+    //Current status of different methods
     @Override
     public String getStatus() {
         String message = "";
-//        if(iceDispensing == true){
-//            message = "Ice currently Dispensing";
-//        } else if (iceDispensing = false) {
-//            message = "You have finished dispensing ice";
-//        }
          if (iceLevel > 0 && iceLevel < 4) {
             if (iceDispensing=true){
                 message = "Ice Level is " + iceLevel;
             }
          }
-                 
-//        message = "The current tempreature is" + fridgeTemp;
+         else if(lockIce==true){
+             message = "The lock disenser is locked";
+         }
         return message;
     }
     
+    //Main Methods
     public static void main(String[] args){
         new FridgeService("Fridge Service");
     }

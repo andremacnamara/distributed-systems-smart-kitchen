@@ -11,13 +11,20 @@ package models;
  *
  * Andre MacNamara
  */
+
+/*
+ *http://www.vogella.com/tutorials/JavaLibrary-Gson/article.html
+ *Vogella
+ */
 public class FridgeModel {
 
+    //All actions avaliable
     public enum serviceAction {
-        increaseTemp, decreaseTemp, turnLightsOff, turnLightsOn, dispenseIce, lockIce, STATUS;
-        // turnToasterOn, turnToasterOff, isToasting, STATUS;
+        increaseTemp, decreaseTemp, turnLightsOff, turnLightsOn, dispenseIce, lockIce, unlockIce, STATUS;
     }
 
+    //Action, message printed out to user, and value.
+    //Getters and Setters
     private serviceAction action;
     private String message;
     private boolean value;

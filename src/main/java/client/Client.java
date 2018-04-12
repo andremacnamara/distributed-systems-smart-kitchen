@@ -18,11 +18,10 @@ import com.google.gson.Gson;
 import models.FridgeModel;
 import models.ToasterModel;
 
-//Services Fridge, Kettle, TV, Toaster
-
 /*
  *
- * @reference Dominic Carr https://moodle.ncirl.ie/mod/resource/view.php?id=54977													/example.java
+ * @reference Dominic Carr 
+ * https://moodle.ncirl.ie/mod/resource/view.php?id=54977													/example.java
  *
  */
 

@@ -8,13 +8,20 @@ import com.google.gson.Gson;
  *
  * @author andre
  */
+
+/*
+ *
+ * @reference Dominic Carr 
+ * https://moodle.ncirl.ie/mod/resource/view.php?id=54977
+ *
+ */
+
+/*
+ *http://www.vogella.com/tutorials/JavaLibrary-Gson/article.html
+ *Vogella
+ */
+
 public class ToasterClient extends Client {
-    //turnOn
-    //turnOff
-    //toastBread
-    //popUpBread
-    //increaseTemp
-    //decreaseTemp
     private String turnToasterOn = "turnToasterOn";
     private String turnToasterOff = "turnToasterOff";
     private String putBreadInToaster = "putBreadInToaster";
@@ -27,6 +34,8 @@ public class ToasterClient extends Client {
         name = "Toaster";
     }
     
+    
+    //Json
     public void turnToasterOn(){
         String json = new Gson().toJson(new ToasterModel(ToasterModel.serviceAction.turnToasterOn));
         String message = sendMessage(json);

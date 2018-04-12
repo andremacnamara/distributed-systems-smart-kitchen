@@ -20,10 +20,13 @@ import javax.swing.JTextArea;
 
 import client.Client;
 
-/**
+/*
  *
- * @author andre
+ * @reference Dominic Carr 
+ * https://moodle.ncirl.ie/mod/resource/view.php?id=54977													/example.java
+ *
  */
+
 public abstract class ClientUI extends JPanel implements ActionListener{
        private static final long serialVersionUID = 1L;
     protected JComboBox services;
