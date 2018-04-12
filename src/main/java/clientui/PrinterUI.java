@@ -18,7 +18,9 @@ public class PrinterUI extends ClientUI {
     private static final long serialVersionUID = -5318589393275157185L;
     private JButton turnPrinterOn;
     private JButton turnPrinterOff;
-    private JButton Print;
+    private JButton putPaperInPrinter;
+    private JButton print;
+    private JButton finishPrinting;
     private final PrinterClient printerClientRef;
 
     public PrinterUI(PrinterClient printerClient) {
@@ -41,10 +43,20 @@ public class PrinterUI extends ClientUI {
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
         add(new JButton[]{turnPrinterOn});
         
-        Print = new JButton("Print");
-        Print.setEnabled(true);
+        print = new JButton("Print");
+        print.setEnabled(false);
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
-        add(new JButton[]{Print});
+        add(new JButton[]{print});
+        
+        putPaperInPrinter = new JButton("Add Paper");
+        putPaperInPrinter.setEnabled(false);
+        scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
+        add(new JButton[]{putPaperInPrinter});
+        
+        finishPrinting = new JButton("Cancel Print");
+        finishPrinting.setEnabled(false);
+        scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
+        add(new JButton[]{finishPrinting});
          
     }
 
@@ -54,19 +66,35 @@ public class PrinterUI extends ClientUI {
             printerClientRef.turnPrinterOff();
             turnPrinterOff.setEnabled(false);
             turnPrinterOn.setEnabled(true);
+            putPaperInPrinter.setEnabled(false);
+            print.setEnabled(false);
         } 
         
         else if (e.getSource() == turnPrinterOn) {
             printerClientRef.turnPrinterOn();
             turnPrinterOff.setEnabled(true);
             turnPrinterOn.setEnabled(false);
-            
+            putPaperInPrinter.setEnabled(true);
+            print.setEnabled(false);
         }
-       else if (e.getSource() == Print) {
-            printerClientRef.turnPrinterOn();
-            Print.setEnabled(true);
-            Print.setEnabled(false);
-            
+      else if (e.getSource() == putPaperInPrinter){
+            printerClientRef.putPaperInPrinter();
+            putPaperInPrinter.setEnabled(false);
+            print.setEnabled(true);
+        }
+      
+      else if (e.getSource() == print){
+            printerClientRef.Printing();
+            print.setEnabled(false);
+            putPaperInPrinter.setEnabled(false);
+        } 
+      
+      else if (e.getSource() == finishPrinting){
+            printerClientRef.finishPrinting();
+            print.setEnabled(false);
+            putPaperInPrinter.setEnabled(true);
+            finishPrinting.setEnabled(false);
         }
     }
+    
 }

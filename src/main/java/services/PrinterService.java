@@ -19,17 +19,15 @@ public class PrinterService extends Service {
     private int power;
     private static boolean TurnPrinterOn, TurnPrinterOff ;
     private static boolean PaperInPrinter;
-    private static boolean Print;
-    private int PrinterOnline;
+    private static boolean printing;
 
     public PrinterService(String serviceName) {
         super(serviceName, "_printer._udp.local.");
         power = 0;
-        PrinterOnline = 0;
         TurnPrinterOn = false;
         TurnPrinterOff = true;
         PaperInPrinter = false;
-        Print = true;
+        printing = false;
         
         ui = new ServiceUI(this, serviceName);
     }
@@ -66,6 +64,25 @@ public class PrinterService extends Service {
             String serviceMessage = (TurnPrinterOn) ? "The printer has turned on" : "printer is offline";
             ui.updateArea(serviceMessage);
         }
+         else if (printer.getAction() == PrinterModel.serviceAction.printing) {
+            String message = (printing) ? "The paper is printing " : "The page is currently printing";
+            String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.printing, message, printing));
+            System.out.println(json);
+            sendBack(json);
+
+            String serviceMessage = (printing) ? "The paper is printing " : "The paper is currently printing";
+            ui.updateArea(serviceMessage);
+        }
+          else if (printer.getAction() == PrinterModel.serviceAction.finishPrinting) {
+            finishPrinting();
+            String message = (printing) ? "The printer is finished printing" :  "\nPlease take your page";
+            String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.finishPrinting, message));
+            System.out.println(json);
+            sendBack(json);
+
+            String serviceMessage = (printing) ? "The printer has finished printer" : "Please take your page";
+            ui.updateArea(serviceMessage);
+        }
         else {
             sendBack(BAD_COMMAND + " - " +a);
         }
@@ -85,6 +102,11 @@ public class PrinterService extends Service {
             power += 100;
             System.out.println("The power level is" +power + ". The printer is on.");
         }
+    }
+    
+     public void finishPrinting() {
+        printing = false;
+
     }
     
    
