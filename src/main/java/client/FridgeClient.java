@@ -26,6 +26,7 @@ public class FridgeClient extends Client {
     private String turnLightsOn  = "turnLightsOn";
     private String turnLightsOff = "turnLightsOff";
     private String dispenseIce = "dispenseIce";
+    private String lockIce     = "lockIce";
     private boolean isWarming    = false;
     
     /*
@@ -98,6 +99,19 @@ public class FridgeClient extends Client {
             isWarming = fridge.getValue();
             ui.updateArea(fridge.getMessage());
         }
+    }
+     
+    public void lockIce(){
+        String json = new Gson().toJson(new FridgeModel(FridgeModel.serviceAction.lockIce));
+        String message = sendMessage(json);
+        FridgeModel fridge = new Gson().fromJson(message, FridgeModel.class);
+        System.out.println("Client Recieved " + json);
+        
+        if(fridge.getAction() == FridgeModel.serviceAction.lockIce){
+            isWarming = fridge.getValue();
+            ui.updateArea(fridge.getMessage());
+        }
+        
     }
     
     @Override

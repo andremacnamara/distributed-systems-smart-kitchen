@@ -22,7 +22,7 @@ public class FridgeService extends Service {
     private int power;
     private int iceLevel;
     private int maxIceLevel;
-    private static boolean tempIncreaseing, tempDecreasing, on, off, iceDispensing;
+    private static boolean tempIncreaseing, tempDecreasing, on, off, iceDispensing, lockIce;
 
     public FridgeService(String serviceName) {
         super(serviceName, "_fridge._udp.local.");
@@ -37,6 +37,7 @@ public class FridgeService extends Service {
         iceDispensing=false;
         iceLevel = 0;
         maxIceLevel = 3;
+        lockIce = false;
         ui = new ServiceUI(this, serviceName);
     }
 
@@ -93,12 +94,23 @@ public class FridgeService extends Service {
         
         else if (fridge.getAction() == FridgeModel.serviceAction.dispenseIce) {
             dispenseIce();
-            String message = (on) ? "The ice is dispensing" : "Sorry, Ice is at the maximum level";
+            String message = (iceDispensing) ? "The ice is dispensing" : "Sorry, Ice is at the maximum level";
             String json = new Gson().toJson(new FridgeModel(FridgeModel.serviceAction.dispenseIce, message));
             System.out.println(json);
             sendBack(json);
 
-            String serviceMessage = (on) ? "The ice is dispensing" : "Sorry, Ice is at the maximum level";
+            String serviceMessage = (iceDispensing) ? "The ice is dispensing" : "Sorry, Ice is at the maximum level";
+            ui.updateArea(serviceMessage);
+        }
+        
+        else if (fridge.getAction() == FridgeModel.serviceAction.lockIce){
+            lockIce();
+            String message = (lockIce) ? "The ice has locked" : "The ice is already locked";
+            String json = new Gson().toJson(new FridgeModel(FridgeModel.serviceAction.dispenseIce, message));
+            System.out.println(json);
+            sendBack(json);
+            
+            String serviceMessage = (iceDispensing) ? "The ice has locked" : "The ice is already locked";
             ui.updateArea(serviceMessage);
         }
         else {
@@ -160,6 +172,11 @@ public class FridgeService extends Service {
         }
     }
     
+    public void lockIce(){
+        iceDispensing = false;
+        lockIce = true;
+    }
+    
 
     @Override
     public String getStatus() {
@@ -175,7 +192,7 @@ public class FridgeService extends Service {
             }
          }
                  
-        message = "The current tempreature is" + fridgeTemp;
+//        message = "The current tempreature is" + fridgeTemp;
         return message;
     }
     
