@@ -17,13 +17,20 @@ public class PrinterService extends Service {
     //Printer Service Branch
 
     private int power;
-    private static boolean on, off ;
+    private static boolean TurnPrinterOn, TurnPrinterOff ;
+    private static boolean PaperInPrinter;
+    private static boolean Print;
+    private int PrinterOnline;
 
     public PrinterService(String serviceName) {
         super(serviceName, "_printer._udp.local.");
         power = 0;
-        on = false;
-        off = true;
+        PrinterOnline = 0;
+        TurnPrinterOn = false;
+        TurnPrinterOff = true;
+        PaperInPrinter = false;
+        Print = true;
+        
         ui = new ServiceUI(this, serviceName);
     }
 
@@ -40,23 +47,23 @@ public class PrinterService extends Service {
         
          else if (printer.getAction() == PrinterModel.serviceAction.turnPrinterOff) {
             turnPrinterOff();
-            String message = (off) ? "The Printer has been turned off" : "The Printer is currently off";
+            String message = (TurnPrinterOff) ? "The Printer has been turned off" : "The Printer is currently offline";
             String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.turnPrinterOff, message));
             System.out.println(json);
             sendBack(json);
 
-            String serviceMessage = (off) ? "Printer turned off" : "Printer is off";
+            String serviceMessage = (TurnPrinterOff) ? "Printer turned off" : "Printer is offline";
             ui.updateArea(serviceMessage);
         }
          
         else if (printer.getAction() == PrinterModel.serviceAction.turnPrinterOn) {
             turnPrinterOn();
-            String message = (on) ? "The Printer has been turned on" : "The Printer is on";
+            String message = (TurnPrinterOn) ? "The Printer has been turned on" : "The Printer is online";
             String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.turnPrinterOn, message));
             System.out.println(json);
             sendBack(json);
 
-            String serviceMessage = (on) ? "The printer has turned on" : "printer is on";
+            String serviceMessage = (TurnPrinterOn) ? "The printer has turned on" : "printer is offline";
             ui.updateArea(serviceMessage);
         }
         else {
@@ -80,14 +87,14 @@ public class PrinterService extends Service {
         }
     }
     
-    
-    public static void main(String[] args){
-        new PrinterService("Printer Service");
-    }
+   
 
     @Override
     public String getStatus() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "The current power level is " + power; 
     }
 
+ public static void main(String[] args){
+        new PrinterService("Printer Service");
+    }
 }

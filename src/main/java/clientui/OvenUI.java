@@ -53,9 +53,9 @@ public class OvenUI extends ClientUI {
         add(new JButton[]{turnOvenOn});
         
         putFoodInOven = new JButton("Add food");
-        turnOvenOn.setEnabled(true);
+        putFoodInOven.setEnabled(true);
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
-        add(new JButton[]{turnOvenOn});
+        add(new JButton[]{putFoodInOven});
     }
 
     @Override

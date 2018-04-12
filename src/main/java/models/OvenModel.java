@@ -7,9 +7,9 @@ package models;
 
 /**
  *
- * @author x14380181
+ * @author x14484252
  *
- * Andre MacNamara
+ * Sean Cowley
  */
 public class OvenModel {
 

@@ -17,15 +17,11 @@ import com.google.gson.Gson;
 
 /* 
 */
-
-
 public class PrinterClient extends Client {
     private String turnPrinterOn  = "turnPrinterOn";
     private String turnPrinterff = "turnPrinterOff";
     private boolean isLoading  = false;
-
-    
-    
+   
     /*
     * Constructor
     */
@@ -36,9 +32,6 @@ public class PrinterClient extends Client {
         ui = new PrinterUI(this);
         name = "Printer";
     }
-    
-  
-  
     
     public void turnPrinterOff(){
         String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.turnPrinterOff));
@@ -72,7 +65,6 @@ public class PrinterClient extends Client {
             isLoading = false;
         }
     }
-    
     @Override
     public void disable() {
         super.disable();
