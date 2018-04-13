@@ -9,7 +9,6 @@ import clientui.OvenUI;
 import models.OvenModel;
 import com.google.gson.Gson;
 
-
 /**
  *
  * @author x14484252
@@ -19,16 +18,16 @@ import com.google.gson.Gson;
 *  Dominic Carr https://moodle.ncirl.ie/mod/resource/view.php?id=53562
 */
 
-
 public class OvenClient extends Client {
     private String increaseTemp  = "increaseTempreature";
     private String decreaseTemp  = "decreaseTempreature";
     private String turnOvenOn  = "turnOvenOn";
     private String turnOvenOff = "turnOvenOff";
+    private String turnFanOn  = "turnFanOn";
     private String putFoodInOven = "putFoodInOven";
-    private boolean isWarming    = false;
+    private boolean isWarming  = false;
     private boolean isCooking = false;
-    
+    private boolean isCooling = false;
     
     /*
     * Constructor
@@ -41,7 +40,7 @@ public class OvenClient extends Client {
         name = "Oven";
     }
     
-    
+    /* converts json */
     public void increaseTemp(){
         String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.increaseTemp));
         String message = sendMessage(json);
@@ -101,6 +100,19 @@ public class OvenClient extends Client {
             ui.updateArea(oven.getMessage());
         }
     }
+     
+     public void turnFanOn(){
+        String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnFanOn));
+        String message = sendMessage(json);
+        OvenModel oven = new Gson().fromJson(message,OvenModel.class);
+        System.out.println("Client Found " +json);
+        
+        if (oven.getAction() == OvenModel.serviceAction.turnFanOn){
+            isWarming = oven.getValue();
+            ui.updateArea(oven.getMessage());
+        }
+    }
+    
     
     @Override
     public void updatePoll(String message) {
@@ -114,6 +126,8 @@ public class OvenClient extends Client {
             isCooking = false;
         }
     }
+     
+    
 
     @Override
     public void disable() {
@@ -121,6 +135,5 @@ public class OvenClient extends Client {
         ui = new OvenUI(this);
         isWarming = false;
     }
-    
     
 }
