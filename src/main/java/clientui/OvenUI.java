@@ -21,6 +21,7 @@ public class OvenUI extends ClientUI {
     private JButton turnOvenOn;
     private JButton turnOvenOff;
     private JButton putFoodInOven;
+    private JButton turnFanOn;
     private final OvenClient ovenClientRef;
 
     public OvenUI(OvenClient ovenClient) {
@@ -52,8 +53,13 @@ public class OvenUI extends ClientUI {
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
         add(new JButton[]{turnOvenOn});
         
+        turnFanOn = new JButton("Turn Fan On");
+        turnFanOn.setEnabled(false);
+        scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
+        add(new JButton[]{turnFanOn});
+        
         putFoodInOven = new JButton("Add food");
-        putFoodInOven.setEnabled(true);
+        putFoodInOven.setEnabled(false);
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
         add(new JButton[]{putFoodInOven});
     }
@@ -62,6 +68,7 @@ public class OvenUI extends ClientUI {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == increase) {
             ovenClientRef.increaseTemp();
+             turnFanOn.setEnabled(true);
         } else if (e.getSource() == decrease) {
             ovenClientRef.decreaseTemp();
         } else if (e.getSource() == turnOvenOff) {
@@ -70,9 +77,14 @@ public class OvenUI extends ClientUI {
             decrease.setEnabled(false);
             turnOvenOff.setEnabled(false);
             turnOvenOn.setEnabled(true);
+            putFoodInOven.setEnabled(false);
+            turnFanOn.setEnabled(false);
         } 
         else if (e.getSource() == putFoodInOven){
             ovenClientRef.putFoodInOven();
+        }
+         else if (e.getSource() == turnFanOn){
+            ovenClientRef.turnFanOn();
         }
         
         else if (e.getSource() == turnOvenOn) {
@@ -83,6 +95,9 @@ public class OvenUI extends ClientUI {
             turnOvenOff.setEnabled(true);
             turnOvenOn.setEnabled(false);
             
+        }
+        else if (e.getSource() == decrease) {
+            ovenClientRef.decreaseTemp();
         }
     }
 }

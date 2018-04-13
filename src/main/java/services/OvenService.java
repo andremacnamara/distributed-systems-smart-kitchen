@@ -21,7 +21,7 @@ public class OvenService extends Service {
     private int ovenTemp;
     private int power;
     private int FoodLevel;
-    private static boolean tempIncreaseing, tempDecreasing, TurnOvenOn, TurnOvenOff, foodInOven;
+    private static boolean tempIncreaseing, tempDecreasing, TurnOvenOn, TurnOvenOff,TurnFanOn, foodInOven;
 
     public OvenService(String serviceName) {
         super(serviceName, "_oven._udp.local.");
@@ -34,6 +34,7 @@ public class OvenService extends Service {
         tempDecreasing = false;
         TurnOvenOn = false;
         TurnOvenOff = true;
+        TurnFanOn = false;
         FoodLevel = 0;
         ui = new ServiceUI(this, serviceName);
     }
@@ -97,7 +98,16 @@ public class OvenService extends Service {
             String serviceMessage = (TurnOvenOff) ? "Oven turned off" : "Oven is off";
             ui.updateArea(serviceMessage);
         }
-           
+           else if (oven.getAction() == OvenModel.serviceAction.turnFanOn) {
+            turnFanOn();
+            String message = (TurnFanOn) ? "The Fan has turned on" : "The oven is cooling down";
+            String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.turnFanOn, message));
+            System.out.println(json);
+            sendBack(json);
+
+            String serviceMessage = (TurnFanOn) ? "Fan Has Turned On" : "Fan is on";
+            ui.updateArea(serviceMessage);
+        }
         else {
             sendBack(BAD_COMMAND + " - " +a);
         }
@@ -109,6 +119,9 @@ public class OvenService extends Service {
             ovenTemp += 50;
         } else {
             tempIncreaseing = false;
+        }
+        if(ovenTemp == 200){
+            TurnFanOn = true;
         }
     }
     
@@ -144,10 +157,38 @@ public class OvenService extends Service {
         }
     }
     
-
+      public void turnFanOn(){
+            if(ovenTemp != minTemp){
+            tempDecreasing = true;
+            ovenTemp -= 20;
+        } else {
+            tempDecreasing = false;
+        }
+    }
+      
+      
+      /*
+      {
+        if(ovenTemp != minTemp){
+            tempDecreasing = true;
+            ovenTemp -= 20;
+            TurnFanOn = true;
+        } else {
+            tempDecreasing = false;
+            TurnFanOn = false;
+        }
+    }
+    
+*/
     @Override
     public String getStatus() {
-        return "The current tempreature is " + ovenTemp; 
+        String message = "";
+        if (ovenTemp == 200){
+            TurnFanOn = true;
+            message = "The fan is on";
+        }
+        message = "The current tempreature is " + ovenTemp; 
+        return message;
     }
     
     public static void main(String[] args){
