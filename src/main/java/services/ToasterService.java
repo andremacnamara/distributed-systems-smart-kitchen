@@ -18,11 +18,10 @@ import servicesui.ServiceUI;
  *
  */
 
-/*
+ /*
  *http://www.vogella.com/tutorials/JavaLibrary-Gson/article.html
  *Vogella
  */
-
 public class ToasterService extends Service {
 
     private int power;
@@ -47,7 +46,6 @@ public class ToasterService extends Service {
         ui = new ServiceUI(this, serviceName);
     }
 
-    
     //  Gson/Json 
     @Override
     protected void performAction(String a) {
@@ -58,7 +56,7 @@ public class ToasterService extends Service {
             String message = getStatus();
             String json = new Gson().toJson(new ToasterModel(ToasterModel.serviceAction.STATUS, message));
             sendBack(json);
-            
+
             //Turn toaster on
         } else if (toaster.getAction() == ToasterModel.serviceAction.turnToasterOn) {
             turnToasterOn();
@@ -66,10 +64,10 @@ public class ToasterService extends Service {
             String json = new Gson().toJson(new ToasterModel(ToasterModel.serviceAction.turnToasterOn, message));
             System.out.println(json);
             sendBack(json);
-            
+
             String serviceMessage = (turnToasterOn) ? "Toaster turned on!" : "Toaster is on!";
             ui.updateArea(serviceMessage);
-            
+
             //Turn toaster off
         } else if (toaster.getAction() == ToasterModel.serviceAction.turnToasterOff) {
             turnToasterOff();
@@ -80,7 +78,7 @@ public class ToasterService extends Service {
 
             String serviceMessage = (turnToasterOff) ? "Toaster turned Off" : "Toaster is Off";
             ui.updateArea(serviceMessage);
-            
+
             //put bread in toaster
         } else if (toaster.getAction() == ToasterModel.serviceAction.putBreadInToaster) {
             putBreadInToaster();
@@ -91,22 +89,20 @@ public class ToasterService extends Service {
 
             String serviceMessage = (breadInToaster) ? "The bread is in the toaster" : "There is currently bread in the toaster";
             ui.updateArea(serviceMessage);
-            
+
             //Toast
         } else if (toaster.getAction() == ToasterModel.serviceAction.toasting) {
             //Instance of time
             timer = new Timer();
             timer.schedule(new ToastTimer(), 100, 1000);
-            String message = (toasting) ? "The bread is toasting" : "The bread is currently toasting";
+            String message = (toasting) ? "The bread is toasting   tempreature is " + toastLevelPercent : "The bread is currently toasting   tempreature is " + toastLevelPercent;
             String json = new Gson().toJson(new ToasterModel(ToasterModel.serviceAction.toasting, message, toasting));
             System.out.println(json);
             sendBack(json);
 
-            String serviceMessage = (toasting) ? "The bread is toasting" : "The bread is currently toasting";
+            String serviceMessage = (toasting) ? "The bread is toasting   tempreature is " + toastLevelPercent : "The bread is currently toasting    tempreature is " + toastLevelPercent;
             ui.updateArea(serviceMessage);
-        }
-        
-        //Stop toasting
+        } //Stop toasting
         else if (toaster.getAction() == ToasterModel.serviceAction.finishToasting) {
             finishToasting();
             String message = (toasting) ? "The bread is finished toasting" : "The final toast tempreature is " + toastLevelPercent + "\nPlease take your toast";
@@ -121,13 +117,9 @@ public class ToasterService extends Service {
         }
     }
 
-    
-    
-    
-    
     //Timer for the toast
     class ToastTimer extends TimerTask {
-        
+
         @Override
         public void run() {
             isToasting = true;
@@ -140,32 +132,18 @@ public class ToasterService extends Service {
         }
     }
 
-    
-    
-    
     public void turnToasterOn() {
         if (power <= 0) {
             power += 100;
-            System.out.println("The toaster is powered on");
         }
     }
-    
-    
-    
-    
-    
 
     public void turnToasterOff() {
         if (power >= 0) {
             power = 0;
             breadLevel = 0;
-            System.out.println("The toaster is powered off");
         }
     }
-    
-    
-    
-    
 
     public void putBreadInToaster() {
         if (breadLevel <= 0) {
@@ -176,10 +154,7 @@ public class ToasterService extends Service {
             breadInToaster = false;
         }
     }
-    
-    
-    
-    
+
     public void finishToasting() {
         toasting = false;
         timer.cancel();
@@ -187,11 +162,6 @@ public class ToasterService extends Service {
         breadLevel = 0;
     }
 
-    
-    
-    
-    
-    
     @Override
     public String getStatus() {
         String message = "";
@@ -199,25 +169,28 @@ public class ToasterService extends Service {
         //When toasting is ready to start. Not on and there is bread in toaster
         if (toastLevelPercent == 0 && breadLevel > 0) {
             message = "Bread is ready to Toast!";
-        } 
-        
-        //If bread is roasting, and the toasting is happening
+            String json = new Gson().toJson(new ToasterModel(ToasterModel.serviceAction.toasting, message, toasting));
+            System.out.println(json);
+            sendBack(json);
+        } //If bread is roasting, and the toasting is happening
         else if (toastLevelPercent > 0 && toastLevelPercent < 100) {
-            if ((toasting=true) && (isToasting = true)){
+            if ((toasting = true) && (isToasting = true)) {
                 message = "Bread is " + toastLevelPercent + " degrees celsius";
-            } 
-            
-            else if (toasting = false){
+                String json = new Gson().toJson(new ToasterModel(ToasterModel.serviceAction.toasting, message, toasting));
+                System.out.println(json);
+                sendBack(json);
+            } else if (toasting = false) {
                 return null;
             }
-        } 
-        
-        //If temp it 100, and obviously the user didn't cancel earler.
+        } //If temp it 100, and obviously the user didn't cancel earler.
         else if (toastLevelPercent >= 100) {
-            message = "Toasting is complete";
+            message = "The bread is toasted" + toastLevelPercent;
+            String json = new Gson().toJson(new ToasterModel(ToasterModel.serviceAction.toasting, message, toasting));
+            System.out.println(json);
+            sendBack(json);
             toasting = false;
-            breadLevel =0;
-            
+            breadLevel = 0;
+
             if (isToasting) {
                 timer.cancel();
                 isToasting = false;
@@ -227,10 +200,6 @@ public class ToasterService extends Service {
         return message;
     }
 
-    
-    
-    
-    
     public static void main(String[] args) {
         new ToasterService("ToasterService");
     }

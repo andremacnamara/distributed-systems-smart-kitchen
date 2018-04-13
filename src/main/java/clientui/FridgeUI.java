@@ -92,6 +92,8 @@ public class FridgeUI extends ClientUI {
             lockIce.setEnabled(false);
             turnLightsOff.setEnabled(false);
             turnLightsOn.setEnabled(true);
+            dispenseIce.setEnabled(false);
+            unlockIce.setEnabled(false);
         } else if (e.getSource() == turnLightsOn) {
             fridgeClientRef.turnLightsOn();
             increase.setEnabled(true);
