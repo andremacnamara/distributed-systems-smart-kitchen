@@ -16,7 +16,7 @@ public class PrinterModel {
     public enum serviceAction {
        turnPrinterOff, turnPrinterOn,  isPrinting, putPaperInPrinter, printing, finishPrinting, STATUS;
     }
-
+ //Getters and Setters
     private serviceAction action;
     private String message;
     private boolean value;
