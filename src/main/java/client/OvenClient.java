@@ -112,7 +112,29 @@ public class OvenClient extends Client {
             ui.updateArea(oven.getMessage());
         }
     }
-    
+     
+      public void Cooking(){
+        String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.cooking));
+        String message = sendMessage(json);
+        OvenModel oven = new Gson().fromJson(message,OvenModel.class);
+        System.out.println("Client Found " +json);
+        
+        if (oven.getAction() == OvenModel.serviceAction.cooking){
+            isCooking = oven.getValue();
+            ui.updateArea(oven.getMessage());
+        }
+    }
+        public void finishCooking(){
+        String json = new Gson().toJson(new OvenModel(OvenModel.serviceAction.finishCooking));
+        String message = sendMessage(json);
+        OvenModel oven = new Gson().fromJson(message,OvenModel.class);
+        System.out.println("Client Found " +json);
+        
+        if (oven.getAction() == OvenModel.serviceAction.finishCooking){
+            isCooking = oven.getValue();
+            ui.updateArea(oven.getMessage());
+        }
+    }
     
     @Override
     public void updatePoll(String message) {
