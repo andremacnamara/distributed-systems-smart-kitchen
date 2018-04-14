@@ -11,14 +11,26 @@ import servicesui.ServiceUI;
 
 /**
  *
+ * 
  * @author x14484252
+ */
+/*
+ *
+ * @reference Dominic Carr 
+ * https://moodle.ncirl.ie/mod/resource/view.php?id=54977													/example.java
+ *
+ */
+
+/*
+ *http://www.vogella.com/tutorials/JavaLibrary-Gson/article.html
+ *Vogella
  */
 public class PrinterService extends Service {
     //Printer Service Branch
 
     private int power;
     private static boolean TurnPrinterOn, TurnPrinterOff ;
-    private static boolean PaperInPrinter;
+    private static boolean paperInPrinter;
     private static boolean printing;
 
     public PrinterService(String serviceName) {
@@ -26,7 +38,7 @@ public class PrinterService extends Service {
         power = 0;
         TurnPrinterOn = false;
         TurnPrinterOff = true;
-        PaperInPrinter = false;
+        paperInPrinter = false;
         printing = false;
         
         ui = new ServiceUI(this, serviceName);
@@ -42,7 +54,7 @@ public class PrinterService extends Service {
             String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.STATUS, message));
             sendBack(json);
         } 
-        
+        //turn printer off
          else if (printer.getAction() == PrinterModel.serviceAction.turnPrinterOff) {
             turnPrinterOff();
             String message = (TurnPrinterOff) ? "The Printer has been turned off" : "The Printer is currently offline";
@@ -53,7 +65,7 @@ public class PrinterService extends Service {
             String serviceMessage = (TurnPrinterOff) ? "Printer turned off" : "Printer is offline";
             ui.updateArea(serviceMessage);
         }
-         
+         //turn printer on
         else if (printer.getAction() == PrinterModel.serviceAction.turnPrinterOn) {
             turnPrinterOn();
             String message = (TurnPrinterOn) ? "The Printer has been turned on" : "The Printer is online";
@@ -64,6 +76,18 @@ public class PrinterService extends Service {
             String serviceMessage = (TurnPrinterOn) ? "The printer has turned on" : "printer is offline";
             ui.updateArea(serviceMessage);
         }
+        //put paper in printer
+        else if (printer.getAction() == PrinterModel.serviceAction.putPaperInPrinter) {
+            String message = (paperInPrinter) ? "The paper is in the printer" : "There is currently paper in the printer";
+            String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.putPaperInPrinter, message));
+            System.out.println(json);
+            sendBack(json);
+
+            String serviceMessage = (paperInPrinter) ? "The paper is in the printer" : "There is paper in the printer";
+            ui.updateArea(serviceMessage);
+            
+            //Print
+        }
          else if (printer.getAction() == PrinterModel.serviceAction.printing) {
             String message = (printing) ? "The paper is printing " : "The page is currently printing";
             String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.printing, message, printing));
@@ -73,6 +97,7 @@ public class PrinterService extends Service {
             String serviceMessage = (printing) ? "The paper is printing " : "The paper is currently printing";
             ui.updateArea(serviceMessage);
         }
+         // finished printing
           else if (printer.getAction() == PrinterModel.serviceAction.finishPrinting) {
             finishPrinting();
             String message = (printing) ? "The printer is finished printing" :  "\nPlease take your page";

@@ -16,6 +16,8 @@ import com.google.gson.Gson;
  */
 
 /* 
+references:
+Dominic Carr https://moodle.ncirl.ie/mod/resource/view.php?id=53562
 */
 public class PrinterClient extends Client {
     private String turnPrinterOn  = "turnPrinterOn";
@@ -33,7 +35,7 @@ public class PrinterClient extends Client {
         ui = new PrinterUI(this);
         name = "Printer";
     }
-    
+    /* Converts Json   */
     public void turnPrinterOff(){
         String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.turnPrinterOff));
         String message = sendMessage(json);
