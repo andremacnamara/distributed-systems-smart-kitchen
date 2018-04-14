@@ -14,7 +14,7 @@ package models;
 public class PrinterModel {
 
     public enum serviceAction {
-       turnPrinterOff, turnPrinterOn,  isPrinting, putPaperInPrinter, printing, finishPrinting, STATUS;
+       turnPrinterOff, turnPrinterOn,  isPrinting, putPaperInPrinter, printing, finishPrinting,cancelPrinting, STATUS;
     }
  //Getters and Setters
     private serviceAction action;

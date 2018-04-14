@@ -30,6 +30,7 @@ public class PrinterService extends Service {
 
     private int power;
     private static boolean TurnPrinterOn, TurnPrinterOff ;
+    private int paperLevel;
     private static boolean paperInPrinter;
     private static boolean printing;
 
@@ -40,6 +41,7 @@ public class PrinterService extends Service {
         TurnPrinterOff = true;
         paperInPrinter = false;
         printing = false;
+        paperLevel = 0;
         
         ui = new ServiceUI(this, serviceName);
     }
@@ -97,6 +99,17 @@ public class PrinterService extends Service {
             String serviceMessage = (printing) ? "The paper is printing " : "The paper is currently printing";
             ui.updateArea(serviceMessage);
         }
+         // Cancelled printing
+          else if (printer.getAction() == PrinterModel.serviceAction.cancelPrinting) {
+            finishPrinting();
+            String message = (printing) ? "The print has been cancelled" :  "\nPress print to retry";
+            String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.cancelPrinting, message));
+            System.out.println(json);
+            sendBack(json);
+
+            String serviceMessage = (printing) ? "The print has cancelled" : "Press print to retry ";
+            ui.updateArea(serviceMessage);
+        }
          // finished printing
           else if (printer.getAction() == PrinterModel.serviceAction.finishPrinting) {
             finishPrinting();
@@ -113,11 +126,19 @@ public class PrinterService extends Service {
         }
     }
     
-    
+    public void putPaperInPrinter() {
+        if (paperLevel <= 0) {
+            paperInPrinter = true;
+            paperLevel = 50;
+        } else {
+            paperInPrinter = false;
+        }
+    }
 
     public void turnPrinterOff() {
         if (power >= 0) {
             power = 0;
+            paperLevel = 0;
             System.out.println("Power Off. Printer is off");
         }
     }
@@ -129,18 +150,20 @@ public class PrinterService extends Service {
         }
     }
     
-     public void finishPrinting() {
-        printing = false;
+     public void cancelPrinting() {
+       System.out.println("Printing cancelled");
 
     }
-    
-   
+     public void finishPrinting() {
+       System.out.println("Printing complete, take your page ");
+
+    }
 
     @Override
     public String getStatus() {
-        return "The current power level is " + power; 
+       String message = "";
+     return message;
     }
-
  public static void main(String[] args){
         new PrinterService("Printer Service");
     }

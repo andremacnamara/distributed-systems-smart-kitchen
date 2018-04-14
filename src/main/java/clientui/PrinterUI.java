@@ -20,7 +20,7 @@ public class PrinterUI extends ClientUI {
     private JButton turnPrinterOff;
     private JButton putPaperInPrinter;
     private JButton print;
-    private JButton finishPrinting;
+    private JButton cancelPrinting;
     private final PrinterClient printerClientRef;
 
     public PrinterUI(PrinterClient printerClient) {
@@ -53,10 +53,10 @@ public class PrinterUI extends ClientUI {
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
         add(new JButton[]{putPaperInPrinter});
         
-        finishPrinting = new JButton("Cancel Print");
-        finishPrinting.setEnabled(false);
+        cancelPrinting = new JButton("Cancel Print");
+        cancelPrinting.setEnabled(false);
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
-        add(new JButton[]{finishPrinting});
+        add(new JButton[]{cancelPrinting});
          
     }
 
@@ -87,13 +87,14 @@ public class PrinterUI extends ClientUI {
             printerClientRef.Printing();
             print.setEnabled(false);
             putPaperInPrinter.setEnabled(false);
+            cancelPrinting.setEnabled(true);
         } 
       
-      else if (e.getSource() == finishPrinting){
+      else if (e.getSource() == cancelPrinting){
             printerClientRef.finishPrinting();
-            print.setEnabled(false);
+            print.setEnabled(true);
             putPaperInPrinter.setEnabled(true);
-            finishPrinting.setEnabled(false);
+            cancelPrinting.setEnabled(true);
         }
     }
     

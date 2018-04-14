@@ -146,7 +146,7 @@ public class OvenService extends Service {
     public void increaseTemp(){
         if(ovenTemp != maxTemp){
             tempIncreaseing = true;
-            ovenTemp += 50;
+            ovenTemp += 30;
         } else {
             tempIncreaseing = false;
         }
@@ -158,7 +158,7 @@ public class OvenService extends Service {
     public void decreaseTemp(){
         if(ovenTemp != minTemp){
             tempDecreasing = true;
-            ovenTemp -= 50;
+            ovenTemp -= 30;
         } else {
             tempDecreasing = false;
         }
@@ -190,7 +190,7 @@ public class OvenService extends Service {
       public void turnFanOn(){
             if(ovenTemp != minTemp){
             tempDecreasing = true;
-            ovenTemp -= 20;
+            ovenTemp -= 10;
         } else {
             tempDecreasing = false;
         }
@@ -218,7 +218,6 @@ public class OvenService extends Service {
     public String getStatus() {
         String message = "";
         if (ovenTemp == 200){
-            TurnFanOn = true;
             message = "The fan is on";
         }
         message = "The current tempreature is " + ovenTemp; 
