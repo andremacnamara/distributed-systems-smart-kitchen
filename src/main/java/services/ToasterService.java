@@ -142,6 +142,7 @@ public class ToasterService extends Service {
         if (power >= 0) {
             power = 0;
             breadLevel = 0;
+            toasting = false;
         }
     }
 
