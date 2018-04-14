@@ -80,6 +80,7 @@ public class ToasterUI extends ClientUI{
             turnToasterOn.setEnabled(true);
             putBreadInToaster.setEnabled(false);
             toast.setEnabled(false);
+            finishToasting.setEnabled(false);
         } else if (e.getSource() == putBreadInToaster){
             toasterClientRef.putBreadInToaster();
             putBreadInToaster.setEnabled(false);
