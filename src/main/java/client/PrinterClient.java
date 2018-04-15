@@ -93,6 +93,18 @@ public class PrinterClient extends Client {
             ui.updateArea(printer.getMessage());
         }
     }
+    
+     public void cancelPrinting(){
+        String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.cancelPrinting));
+        String message = sendMessage(json);
+        PrinterModel printer = new Gson().fromJson(message, PrinterModel.class);
+        System.out.println("Client Recieved " + json);
+        
+        if(printer.getAction() == PrinterModel.serviceAction.cancelPrinting){
+            isPrinting = printer.getValue();
+            ui.updateArea(printer.getMessage());
+        }
+    }
    
    
     @Override
