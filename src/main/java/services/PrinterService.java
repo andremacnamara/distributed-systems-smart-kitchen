@@ -33,6 +33,7 @@ public class PrinterService extends Service {
     private int paperLevel;
     private static boolean paperInPrinter;
     private static boolean printing;
+    private static boolean isPrinting;
 
     public PrinterService(String serviceName) {
         super(serviceName, "_printer._udp.local.");
@@ -41,6 +42,7 @@ public class PrinterService extends Service {
         TurnPrinterOff = true;
         paperInPrinter = false;
         printing = false;
+        isPrinting = false;
         paperLevel = 0;
         
         ui = new ServiceUI(this, serviceName);
@@ -101,15 +103,16 @@ public class PrinterService extends Service {
         }
          // Cancelled printing
           else if (printer.getAction() == PrinterModel.serviceAction.cancelPrinting) {
-            finishPrinting();
-            String message = (printing) ? "The print has been cancelled" :  "\nPress print to retry";
+            cancelPrinting();
+            String message = (printing) ? "The print has been cancelled" :  "\n Printing Cancelled, Press print to retry";
             String json = new Gson().toJson(new PrinterModel(PrinterModel.serviceAction.cancelPrinting, message));
             System.out.println(json);
             sendBack(json);
 
-            String serviceMessage = (printing) ? "The print has cancelled" : "Press print to retry ";
+            String serviceMessage = (printing) ? "The print has cancelled" : "Print has cancelled, Press print to retry ";
             ui.updateArea(serviceMessage);
         }
+          
          // finished printing
           else if (printer.getAction() == PrinterModel.serviceAction.finishPrinting) {
             finishPrinting();
@@ -124,6 +127,7 @@ public class PrinterService extends Service {
         else {
             sendBack(BAD_COMMAND + " - " +a);
         }
+
     }
     
     public void putPaperInPrinter() {
@@ -155,7 +159,8 @@ public class PrinterService extends Service {
 
     }
      public void finishPrinting() {
-       System.out.println("Printing complete, take your page ");
+        printing = false;
+        isPrinting = false;
 
     }
 

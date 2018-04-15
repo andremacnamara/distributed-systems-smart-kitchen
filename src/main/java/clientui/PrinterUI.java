@@ -91,7 +91,7 @@ public class PrinterUI extends ClientUI {
         } 
       
       else if (e.getSource() == cancelPrinting){
-            printerClientRef.finishPrinting();
+            printerClientRef.cancelPrinting();
             print.setEnabled(true);
             putPaperInPrinter.setEnabled(true);
             cancelPrinting.setEnabled(true);
